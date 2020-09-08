@@ -1,5 +1,7 @@
 var userFormE1 = document.querySelector("#user-form");
-var nameInputE1 = document.querySelector("#username")
+var nameInputE1 = document.getElementById("username")
+var repoContainerE1 = document.querySelector("#repos-container");
+var repoSearchTerm = document.querySelector("#repo-search-term");
 
 
 var getUserRepos = function(user) {
@@ -17,20 +19,57 @@ var getUserRepos = function(user) {
 getUserRepos();
 
 var formSubmitHandler = function(event) {
-    // get the value from input element 
-    var username = nameInputE1.value.trim();
+    event.preventDefault();
+    // get value from input element
+    var userName = nameInputEl.value.trim();
 
-    if (username) {
-        getUserRepos(username);
-        nameInputE1.value = "";
+    if (userName) {
+        getUserRepos(userName);
+        nameInputEl.value = "";
     } else {
-        alert("Please enter a Github Username")
+        alert("Please enter a GitHub username");
     }
 }
 
 var displayRepos = function(repos, searchTerm) {
-    console.log(repos);
-    console.log(searchTerm);
+    // clear old content
+    repoContainerE1.textContent = "";
+    repoSearchTerm.textContent = searchTerm;
+
+
+    // loop over repos
+    for (var i = 0; i < repos.length; i++) {
+        // format repo name 
+        var repoName = repos[i].owner.login + "/" + repos[i].name;
+
+        // create a container for each repo
+        var repoE1 = document.createElement("div");
+        repoE1.classList = "list-item flex-row justify-space-between align-center";
+
+        // create a span element to hold repository name 
+        var titleE1 = document.createElement("span");
+        titleE1.textContent = repoName;
+
+        // append to container
+        repoE1.appendChild(titleE1);
+
+        // create a status element
+        var statusEl = document.createElement("span");
+        statusEl.classList = "flex-row align-center";
+
+        // check if current repo has issues or not
+        if (repos[i].open_issues_count > 0) {
+            statusEl.innerHTML =
+                "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+        } else {
+            statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+        }
+
+        // append container to the dom
+        repoContainerE1.appendChild(repoE1);
+
+    }
 };
+
 
 userFormE1.addEventListener("submit", formSubmitHandler);
