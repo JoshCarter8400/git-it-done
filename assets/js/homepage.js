@@ -1,5 +1,5 @@
 var userFormE1 = document.querySelector("#user-form");
-var nameInputE1 = document.getElementById("username")
+var nameInputE1 = document.querySelector("#username")
 var repoContainerE1 = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
 
@@ -16,16 +16,17 @@ var getUserRepos = function(user) {
         });
     });
 };
-getUserRepos();
+// getUserRepos();
 
 var formSubmitHandler = function(event) {
     event.preventDefault();
     // get value from input element
-    var userName = nameInputEl.value.trim();
+    var nameInputE1 = document.querySelector("#username")
+    var userName = nameInputE1.value.trim();
 
     if (userName) {
         getUserRepos(userName);
-        nameInputEl.value = "";
+        nameInputE1.value = "";
     } else {
         alert("Please enter a GitHub username");
     }
