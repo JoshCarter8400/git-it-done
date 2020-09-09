@@ -7,14 +7,24 @@ var repoSearchTerm = document.querySelector("#repo-search-term");
 var getUserRepos = function(user) {
 
     // format the github api url
-    var apiUrl = "https://api.github.com/users/" + user + "/repos";
+    fetch(apiUrl)
+        .then(function(response) {
+            // request was successful
+            if (response.ok) {
+                response.json().then(function(data) {
+                    displayRepos(data, user);
+                });
+            } else {
+                alert("Error: " + response.statusText);
+            }
+        })
+        .catch(function(error) {
+            // notice this '.catch()' getting chained ontothe end of the '.then()'
+            alert("unable to connect to Github")
+        })
 
-    // make a repo request to the url
-    fetch(apiUrl).then(function(repsonse) {
-        repsonse.json().then(function(data) {
-            displayRepos(data, user);
-        });
-    });
+
+
 };
 // getUserRepos();
 
@@ -33,6 +43,12 @@ var formSubmitHandler = function(event) {
 }
 
 var displayRepos = function(repos, searchTerm) {
+
+    // check if api returned repos
+    if (repos.length === 0) {
+        repoContainerE1.textContent = "No repositories found"
+        return;
+    }
     // clear old content
     repoContainerE1.textContent = "";
     repoSearchTerm.textContent = searchTerm;
