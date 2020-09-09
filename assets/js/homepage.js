@@ -5,7 +5,7 @@ var repoSearchTerm = document.querySelector("#repo-search-term");
 
 
 var getUserRepos = function(user) {
-
+    var apiUrl = "https://api.github.com/users/" + user + "/repos";
     // format the github api url
     fetch(apiUrl)
         .then(function(response) {
@@ -56,19 +56,20 @@ var displayRepos = function(repos, searchTerm) {
 
     // loop over repos
     for (var i = 0; i < repos.length; i++) {
-        // format repo name 
+        // format repo name
         var repoName = repos[i].owner.login + "/" + repos[i].name;
 
         // create a container for each repo
-        var repoE1 = document.createElement("div");
-        repoE1.classList = "list-item flex-row justify-space-between align-center";
+        var repoEl = document.createElement("a");
+        repoEl.classList = "list-item flex-row justify-space-between align-center";
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
 
         // create a span element to hold repository name 
         var titleE1 = document.createElement("span");
         titleE1.textContent = repoName;
 
         // append to container
-        repoE1.appendChild(titleE1);
+        repoEl.appendChild(titleE1);
 
         // create a status element
         var statusEl = document.createElement("span");
@@ -95,9 +96,9 @@ var displayRepos = function(repos, searchTerm) {
         }
 
         // append to container
-        repoE1.appendChild(statusE1)
+        repoEl.appendChild(statusE1)
             // append container to the dom
-        repoContainerE1.appendChild(repoE1);
+        repoContainerE1.appendChild(repoEl);
 
     }
 };
