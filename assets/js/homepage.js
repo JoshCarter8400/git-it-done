@@ -66,7 +66,21 @@ var displayRepos = function(repos, searchTerm) {
             statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
         }
 
-        // append container to the dom
+        // create a status element 
+        var statusE1 = document.createElement("span");
+        statusE1.classList = "flex-row align-center";
+
+        // check if current repos has issues or not
+        if (repos[i].open_issues_count > 0) {
+            statusE1.innerHTML =
+                "<i class = 'fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+        } else {
+            statusE1.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+        }
+
+        // append to container
+        repoE1.appendChild(statusE1)
+            // append container to the dom
         repoContainerE1.appendChild(repoE1);
 
     }
